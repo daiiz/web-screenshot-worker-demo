@@ -3,7 +3,10 @@
     "module": "commonjs",
     "target": "es2015",
     "sourceMap": false,
-    "outDir": "lib"
+    "outDir": "lib",
+    "lib": [
+      "webworker"
+    ]
   },
   "exclude": [
     "node_modules"
