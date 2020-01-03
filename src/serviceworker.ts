@@ -3,6 +3,7 @@ export default null
 declare var self: ServiceWorkerGlobalScope
 
 const { xsltProcess, xmlParse } = require('xslt-processor')
+const cacheName = 'web-screenshot'
 console.log('serviceworker.js')
 
 self.addEventListener('install', () => self.skipWaiting())
@@ -39,7 +40,7 @@ self.addEventListener('fetch', event => {
 
       // fetch xsl content
       const xslPathname = '/web-screenshot.xsl'
-      const xslRes = await fetch(xslPathname)
+      const xslRes = await respondCacheFirst(cacheName, xslPathname)
       const xslText = await xslRes.text()
       const xslObject = xmlParse(xslText)
 
@@ -60,6 +61,26 @@ self.addEventListener('fetch', event => {
   return
 })
 
+const respondCacheFirst = async (key, url) => {
+  url = url.split('?').shift()
+  const cache = await caches.open(key)
+  const res = await cache.match(url)
+  if (res) {
+    fetchAndupdateCache(key, url)
+    return res
+  }
+  const remoteRes = await fetchAndupdateCache(key, url)
+  return remoteRes
+}
+
+const fetchAndupdateCache = async (key, url) => {
+  if (!navigator.onLine) return
+  const res = await fetch(url, { mode: 'cors', credentials: 'include' })
+  const cache = await caches.open(key)
+  await cache.put(url, res.clone())
+  return res
+}
+
 const convertToDataUrl = async srcUrl => {
   const createDataUrl = (arrayBuffer, dataURIScheme) => {
     const byteArray = new Uint8Array(arrayBuffer)
@@ -68,7 +89,7 @@ const convertToDataUrl = async srcUrl => {
     }, ''))
   }
   try {
-    const res = await fetch(srcUrl, { mode: 'cors', credentials: 'include' })
+    const res = await respondCacheFirst(cacheName, srcUrl)
     const _res = res.clone()
     const buf = await _res.arrayBuffer()
     const blob = await res.blob()
