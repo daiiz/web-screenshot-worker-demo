@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8" />
@@ -6,20 +7,42 @@
       body {
         font-family: sans-serif;
       }
+      img {
+        margin-left: 16px;
+      }
+      pre {
+        display: block;
+        margin-top: 24px;
+        background-color: #eee;
+        padding: 2px;
+        padding-left: 8px;
+        border-radius: 1px;
+      }
     </style>
   </head>
   <body>
     <h1>ScreenshotML worker demo</h1>
     <div>
       <h2>xml-drawing</h2>
-      <img src="/svg-drawing/scrapbox-logo.xml">
-      <img src="/svg-drawing/coffee.xml">
+      <div>
+        <pre>/svg-drawing/scrapbox-logo.xml</pre>
+        <img src="/svg-drawing/scrapbox-logo.xml">
+      </div>
+      <div>
+        <pre>/svg-drawing/coffee.xml</pre>
+        <img src="/svg-drawing/coffee.xml">
+      </div>
     </div>
     <div>
       <h2>xml-screenshot</h2>
-      <img src="/web-screenshot/book.xml">
-      <br>
-      <img src="/web-screenshot/pancake.xml">
+      <div>
+        <pre>/web-screenshot/book.xml</pre>
+        <img src="/web-screenshot/book.xml">
+      </div>
+      <div>
+        <pre>/web-screenshot/pancake.xml</pre>
+        <img src="/web-screenshot/pancake.xml">
+      </div>
     </div>
 
     <script src="/js/client.js"></script>
