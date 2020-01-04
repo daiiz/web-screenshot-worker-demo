@@ -50,10 +50,26 @@ self.addEventListener('fetch', event => {
       const headers = new Headers()
       headers.append('X-Xml-Path', pathname)
       headers.append('X-Xsl-Path', xslPathname)
-      const res = new Response(blob, { status: 200, statusText: 'OK', headers })
-      // TODO: save to CacheStorage
-      return res
-      // return fetch('/a.svg')
+      return new Response(blob, { status: 200, statusText: 'OK', headers })
+    })())
+  } else if (pathname.startsWith('/svg-drawing/') && pathname.endsWith('.xml')) {
+    event.respondWith((async function () {
+      // fetch the xml content
+      const xmlRes = await fetch(pathname)
+      const xmlText = (await xmlRes.text()).split('\n').map(line => line.trim()).join('')
+      const xmlObject = xmlParse(xmlText)
+      // fetch xsl content
+      const xslPathname = '/svg-drawing.xsl'
+      const xslRes = await respondCacheFirst(cacheName, xslPathname)
+      const xslText = await xslRes.text()
+      const xslObject = xmlParse(xslText)
+      // generate svg string
+      const outSvgText = xsltProcess(xmlObject, xslObject)
+      const blob = new Blob([outSvgText], { type: 'image/svg+xml' })
+      const headers = new Headers()
+      headers.append('X-Xml-Path', pathname)
+      headers.append('X-Xsl-Path', xslPathname)
+      return new Response(blob, { status: 200, statusText: 'OK', headers })
     })())
   }
 
