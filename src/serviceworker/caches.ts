@@ -9,9 +9,8 @@ const fetchAndupdateCache = async (key, url) => {
 }
 
 const respondCacheFirst = async url => {
-  url = url.split('?').shift()
   const cache = await caches.open(cacheName)
-  const res = await cache.match(url)
+  const res = await cache.match(url, { ignoreSearch: true })
   if (res) {
     fetchAndupdateCache(cacheName, url)
     return res
