@@ -18,7 +18,22 @@
         padding-left: 8px;
         border-radius: 1px;
       }
+      iframe {
+        overflow: hidden;
+        border: none;
+        margin-left: 16px;
+        width: 150px;
+        height: 150px;
+        background-color: transparent;
+      }
     </style>
+    <script>
+      function fit (iframe) {
+        const rootSvg = iframe.contentWindow.document.children[0]
+        iframe.style.height = rootSvg.getAttribute("height") + "px"
+        iframe.style.width = rootSvg.getAttribute("width") + "px"
+      }
+    </script>
   </head>
   <body>
     <h1>ScreenshotML worker demo</h1>
@@ -26,22 +41,26 @@
       <h2>xml-drawing</h2>
       <div>
         <pre>/svg-drawing/scrapbox-logo.xml</pre>
-        <img src="/svg-drawing/scrapbox-logo.xml">
+        <!-- <img src="/svg-drawing/scrapbox-logo.xml"> -->
+        <iframe src="/svg-drawing/scrapbox-logo.xml" onload="fit(this)" sandbox="allow-same-origin"></iframe>
       </div>
       <div>
         <pre>/svg-drawing/coffee.xml</pre>
-        <img src="/svg-drawing/coffee.xml">
+        <!-- <img src="/svg-drawing/coffee.xml"> -->
+        <iframe src="/svg-drawing/coffee.xml" onload="fit(this)" sandbox="allow-same-origin"></iframe>
       </div>
     </div>
     <div>
       <h2>xml-screenshot</h2>
       <div>
         <pre>/web-screenshot/book.xml</pre>
-        <img src="/web-screenshot/book.xml">
+        <!-- <img src="/web-screenshot/book.xml"> -->
+        <iframe src="/web-screenshot/book.xml" onload="fit(this)" sandbox="allow-same-origin"></iframe>
       </div>
       <div>
         <pre>/web-screenshot/pancake.xml</pre>
-        <img src="/web-screenshot/pancake.xml">
+        <!-- <img src="/web-screenshot/pancake.xml"> -->
+        <iframe src="/web-screenshot/pancake.xml" onload="fit(this)" sandbox="allow-same-origin"></iframe>
       </div>
     </div>
 

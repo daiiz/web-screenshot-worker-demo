@@ -31,7 +31,9 @@ const loadXml = async xmlPath => {
     for (const node of rootNode.childNodes) {
       if (node.nodeName === 'background-image') {
         const attr = node.attributes.find(attr => attr.nodeName === 'src')
-        if (attr && attr.nodeValue) attr.nodeValue = await convertToDataUrl(attr.nodeValue)
+        if (attr && attr.nodeValue) {
+          attr.nodeValue = attr.nodeValue // await convertToDataUrl(attr.nodeValue)
+        }
       }
     }
   }
