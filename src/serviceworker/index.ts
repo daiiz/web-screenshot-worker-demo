@@ -31,9 +31,10 @@ self.addEventListener('fetch', event => {
 
   // XSLT (Transform XML to SVG)
   if (pathname.startsWith('/web-screenshot/') && pathname.endsWith('.xml')) {
+    const shouldConvertToDataUri = req.destination === 'image'
     event.respondWith((async function () {
       return createSvgResponse({
-        xmlObject: await webScreenshot.loadXml(pathname),
+        xmlObject: await webScreenshot.loadXml(pathname, { shouldConvertToDataUri }),
         xmlPath: pathname,
         xslPath: '/web-screenshot.xsl'
       })
