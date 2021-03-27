@@ -26,12 +26,17 @@ self.addEventListener('activate', () => self.clients.claim())
 self.addEventListener('fetch', event => {
   const req = event.request
   const { pathname, origin, host } = new URL(req.url)
+  const { destination } = req
   // fall back to network
   if (req.method !== 'GET') return
+  if (!['image', 'iframe'].includes(destination)) {
+    console.log('#', destination)
+    return
+  }
 
   // XSLT (Transform XML to SVG)
   if (pathname.startsWith('/web-screenshot/') && pathname.endsWith('.xml')) {
-    const shouldConvertToDataUri = req.destination === 'image'
+    const shouldConvertToDataUri = destination === 'image'
     event.respondWith((async function () {
       return createSvgResponse({
         xmlObject: await webScreenshot.loadXml(pathname, { shouldConvertToDataUri }),
