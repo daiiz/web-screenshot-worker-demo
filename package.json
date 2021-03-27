@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "ScreenshotML worker demo",
   "main": "index.js",
+  "engines": {
+    "node": "12.x"
+  },
   "scripts": {
     "build": "run-s build:**",
     "build:tsc": "tsc",
