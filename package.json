@@ -11,7 +11,8 @@
     "build:tsc": "tsc",
     "build:browserify": "browserify -g [ uglifyify --keep_fnames ] lib/serviceworker/index.js -o static/serviceworker.js",
     "watch": "tsc --watch",
-    "start": "node-dev index.js"
+    "start": "node index.js",
+    "dev": "node-dev index.js"
   },
   "author": "daiiz",
   "license": "MIT",
