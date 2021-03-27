@@ -8,7 +8,7 @@
     "build:tsc": "tsc",
     "build:browserify": "browserify -g [ uglifyify --keep_fnames ] lib/serviceworker/index.js -o static/serviceworker.js",
     "watch": "tsc --watch",
-    "start": "node index.js"
+    "start": "node-dev index.js"
   },
   "author": "daiiz",
   "license": "MIT",
@@ -23,5 +23,8 @@
     "typescript": "^3.7.4",
     "uglifyify": "^5.0.1",
     "xslt-processor": "^0.11.5"
+  },
+  "devDependencies": {
+    "node-dev": "^6.6.0"
   }
 }

@@ -2,7 +2,7 @@ export default null
 const { xmlParse } = require('xslt-processor')
 const { respondCacheFirst } = require('./caches')
 
-const convertToDataUrl = async srcUrl => {
+const convertToDataUri = async srcUrl => {
   const createDataUrl = (arrayBuffer, dataURIScheme) => {
     const byteArray = new Uint8Array(arrayBuffer)
     return dataURIScheme + btoa(byteArray.reduce((data, byte) => {
@@ -21,7 +21,7 @@ const convertToDataUrl = async srcUrl => {
   }
 }
 
-const loadXml = async xmlPath => {
+const loadXml = async (xmlPath, { shouldConvertToDataUri }) => {
   const xmlRes = await fetch(xmlPath)
   let xmlText = (await xmlRes.text()).split('\n').map(line => line.trim()).join('')
   xmlText = xmlText.replace(/<external-images>.*<\/external-images>/ig, '')
@@ -31,7 +31,9 @@ const loadXml = async xmlPath => {
     for (const node of rootNode.childNodes) {
       if (node.nodeName === 'background-image') {
         const attr = node.attributes.find(attr => attr.nodeName === 'src')
-        if (attr && attr.nodeValue) attr.nodeValue = await convertToDataUrl(attr.nodeValue)
+        if (attr && attr.nodeValue) {
+          attr.nodeValue = shouldConvertToDataUri ? await convertToDataUri(attr.nodeValue) : attr.nodeValue
+        }
       }
     }
   }
