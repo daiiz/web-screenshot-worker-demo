@@ -37,21 +37,21 @@ self.addEventListener('fetch', event => {
   // XSLT (Transform XML to SVG)
   if (pathname.startsWith('/web-screenshot/') && pathname.endsWith('.xml')) {
     const shouldConvertToDataUri = destination === 'image'
-    event.respondWith((async function () {
+    event.respondWith(async function () {
       return createSvgResponse({
         xmlObject: await webScreenshot.loadXml(pathname, { shouldConvertToDataUri }),
         xmlPath: pathname,
         xslPath: '/web-screenshot.xsl'
       })
-    })())
+    }())
   } else if (pathname.startsWith('/svg-drawing/') && pathname.endsWith('.xml')) {
-    event.respondWith((async function () {
+    event.respondWith(async function () {
       return createSvgResponse({
         xmlObject: await svgDrawing.loadXml(pathname),
         xmlPath: pathname,
         xslPath: '/svg-drawing.xsl'
       })
-    })())
+    }())
   }
 
   // fall back to network
